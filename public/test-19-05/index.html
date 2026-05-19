@@ -27,7 +27,7 @@
 <body>
     <h1>🧪 Test Harness — Andrea V2</h1>
     <div class="meta">
-        Generated: 2026-05-19 17:22<br>
+        Generated: 2026-05-19 19:01<br>
         Model: unknown | Provider: unknown<br>
         Connector: file
     </div>
@@ -36,7 +36,7 @@
         <h2>📊 Summary</h2>
         <div class="summary-grid">
             <div class="summary-card pass">
-                <div class="big">0.96</div>
+                <div class="big">0.97</div>
                 <div>Avg Score</div>
             </div>
             <div class="summary-card pass">
@@ -69,7 +69,7 @@
             
             <tr>
                 <td><b>AMBIGUITY</b></td>
-                <td>0.94</td>
+                <td>0.97</td>
                 <td>6/6</td>
             </tr>
             
@@ -196,19 +196,11 @@ Stai parlando di:
                 <td>✅ <b>T06</b></td>
                 <td>dimmi dove sono posizionato i fori nel piastrini laterali</td>
                 <td>ask_product_code_or_disclaimer</td>
-                <td><b>0.83</b></td>
-                <td>—</td>
-                <td>&nbsp;&nbsp;• ambiguity_product: <b>0.5</b><br>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
-                <td class="notes">&nbsp;&nbsp;• Disclaimer present but no code asked ⚠<br>&nbsp;&nbsp;• Ground truth note: Dato 5232 senza disclaimer né richiesta codice → SCORE ATTUALE: 0<br>&nbsp;&nbsp;• Length OK (791 chars)</td>
-                <td class="response">I dati ufficiali sulla posizione dei fori nei piastrini laterali, dal disegno tecnico MAVBVDFI5232SCI (famiglia BVCI canale ispezionabile):
-
-Ogni piastrino laterale ha **2 fori**, diametro **∅6 mm**.
-
-**Posizione dei fori (dal centro del foro):**
-- Distanza dal fondo del piastrino: **31 mm**
-- Distanza dal bordo sinistro: **18,14 mm**
-- Distanza dal bordo destro: **14 mm**
-- Distanza tra i centri  ...</td>
+                <td><b>1.0</b></td>
+                <td>42000ms</td>
+                <td>&nbsp;&nbsp;• ambiguity_product: <b>1.0</b><br>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• Asks for product code ✓<br>&nbsp;&nbsp;• Ground truth note: Dato 5232 senza disclaimer né richiesta codice → SCORE ATTUALE: 0<br>&nbsp;&nbsp;• Length OK (150 chars)</td>
+                <td class="response">Ho trovato 3 modelli attivi nella famiglia BVCI canale ispezionabile che montano piastrini laterali: 5232, 6232, 7232. Di quale codice prodotto parli?</td>
             </tr>
             
             <tr class="pass">
