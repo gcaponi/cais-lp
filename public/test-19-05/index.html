@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Harness — Andrea V2</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 2rem; background: #f5f5f5; color: #333; }
+        h1 { color: #1a1a1a; border-bottom: 3px solid #2563eb; padding-bottom: 0.5rem; }
+        .summary { background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .summary-card { background: #f8fafc; padding: 1rem; border-radius: 6px; text-align: center; border-left: 4px solid #2563eb; }
+        .summary-card.fail { border-left-color: #dc2626; }
+        .summary-card.pass { border-left-color: #16a34a; }
+        .summary-card.warn { border-left-color: #ea580c; }
+        .big { font-size: 2rem; font-weight: bold; color: #1e293b; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        th { background: #1e293b; color: white; padding: 0.75rem; text-align: left; font-size: 0.85rem; text-transform: uppercase; }
+        td { padding: 0.75rem; border-bottom: 1px solid #e2e8f0; vertical-align: top; font-size: 0.9rem; }
+        tr.pass { background: #f0fdf4; }
+        tr.fail { background: #fef2f2; }
+        td.notes { font-size: 0.8rem; color: #64748b; max-width: 300px; }
+        td.response { font-size: 0.8rem; color: #475569; font-family: monospace; max-width: 400px; white-space: pre-wrap; }
+        .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 1rem; }
+        .category-table { width: auto; min-width: 400px; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Harness — Andrea V2</h1>
+    <div class="meta">
+        Generated: 2026-05-19 17:22<br>
+        Model: unknown | Provider: unknown<br>
+        Connector: file
+    </div>
+
+    <div class="summary">
+        <h2>📊 Summary</h2>
+        <div class="summary-grid">
+            <div class="summary-card pass">
+                <div class="big">0.96</div>
+                <div>Avg Score</div>
+            </div>
+            <div class="summary-card pass">
+                <div class="big">18</div>
+                <div>Passed</div>
+            </div>
+            <div class="summary-card warn">
+                <div class="big">1</div>
+                <div>Partial</div>
+            </div>
+            <div class="summary-card fail">
+                <div class="big">0</div>
+                <div>Failed</div>
+            </div>
+            <div class="summary-card">
+                <div class="big">19</div>
+                <div>Total</div>
+            </div>
+        </div>
+
+        <h3>By Category</h3>
+        <table class="category-table">
+            <tr><th>Category</th><th>Avg Score</th><th>Passed/Total</th></tr>
+            
+            <tr>
+                <td><b>BOUNDARY</b></td>
+                <td>1.0</td>
+                <td>5/5</td>
+            </tr>
+            
+            <tr>
+                <td><b>AMBIGUITY</b></td>
+                <td>0.94</td>
+                <td>6/6</td>
+            </tr>
+            
+            <tr>
+                <td><b>EMPATHY</b></td>
+                <td>0.8</td>
+                <td>1/2</td>
+            </tr>
+            
+            <tr>
+                <td><b>TECHNICAL</b></td>
+                <td>1.0</td>
+                <td>3/3</td>
+            </tr>
+            
+            <tr>
+                <td><b>ANTI_DRIFT</b></td>
+                <td>1.0</td>
+                <td>2/2</td>
+            </tr>
+            
+            <tr>
+                <td><b>CUSTOM</b></td>
+                <td>1.0</td>
+                <td>1/1</td>
+            </tr>
+            
+        </table>
+    </div>
+
+    <h2>🔍 Detailed Results</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Question</th>
+            <th>Expected</th>
+            <th>Score</th>
+            <th>Time</th>
+            <th>Criteria</th>
+            <th>Notes</th>
+            <th>Response Preview</th>
+        </tr>
+        
+            <tr class="pass">
+                <td>✅ <b>T01</b></td>
+                <td>Che tipo di collanti devo usare?</td>
+                <td>redirect_office</td>
+                <td><b>1.0</b></td>
+                <td>—</td>
+                <td>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (93 chars)</td>
+                <td class="response">Per questa richiesta contatta l&#x27;ufficio tecnico: info@manifattureacciai.com  +39 0732 040762.</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T02</b></td>
+                <td>Quanto costa una vasca BVCI 5232?</td>
+                <td>redirect_office</td>
+                <td><b>1.0</b></td>
+                <td>46911ms</td>
+                <td>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (167 chars)</td>
+                <td class="response">Non ho questa informazione specifica nel mio sistema tecnico. Per questo livello di dettaglio contatta l&#x27;ufficio tecnico: info@manifattureacciai.com — +39 0732 040762.</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T03</b></td>
+                <td>Mi consigli il Dekton o il Silestone per il rivestimento?</td>
+                <td>redirect_office</td>
+                <td><b>1.0</b></td>
+                <td>—</td>
+                <td>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (497 chars)</td>
+                <td class="response">Non do consigli su prodotti commerciali.
+
+La documentazione tecnica del sistema Manifatture Acciai elenca le categorie di materiali compatibili a prescindere dal brand:
+
+- gres
+- pietre sinterizzate
+- quarzo
+- pietra naturale
+- HPL
+- Fenix
+- Corian
+- solid surface
+- altri materiali waterproof equivalenti
+
+Per la scelta tra marche specifiche e per valutazioni sul comportamento del materiale nel vos ...</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T04</b></td>
+                <td>come faccio l&#x27;incollaggio della vasca?</td>
+                <td>disambiguation_process</td>
+                <td><b>1.0</b></td>
+                <td>—</td>
+                <td>&nbsp;&nbsp;• ambiguity_process: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• STOP/Ambiguity signal present<br>&nbsp;&nbsp;• Two or more numbered options present<br>&nbsp;&nbsp;• Length OK (318 chars)</td>
+                <td class="response">STOP  Ambiguità processo non specificato
+
+La tua domanda sull&#x27;incollaggio della vasca non specifica a quale fase ti riferisci.
+
+Stai parlando di:
+
+1. Incollaggio sottotop  fissaggio della vasca al piano d&#x27;appoggio (sotto il top)
+2. Incollaggio rivestimento  incollaggio delle piastrelle/pietre sulle pareti della vasca</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T05</b></td>
+                <td>come si monta il canale?</td>
+                <td>disambiguation_process</td>
+                <td><b>1.0</b></td>
+                <td>64029ms</td>
+                <td>&nbsp;&nbsp;• ambiguity_process: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• STOP/Ambiguity signal present<br>&nbsp;&nbsp;• Two or more numbered options present<br>&nbsp;&nbsp;• Length OK (182 chars)</td>
+                <td class="response">A quale fase di montaggio ti riferisci?
+
+1. Montaggio sottotop (fissaggio della vasca al piano d&#x27;appoggio)
+2. Montaggio del rivestimento (posa del materiale sulle pareti della vasca)</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T06</b></td>
+                <td>dimmi dove sono posizionato i fori nel piastrini laterali</td>
+                <td>ask_product_code_or_disclaimer</td>
+                <td><b>0.83</b></td>
+                <td>—</td>
+                <td>&nbsp;&nbsp;• ambiguity_product: <b>0.5</b><br>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• Disclaimer present but no code asked ⚠<br>&nbsp;&nbsp;• Ground truth note: Dato 5232 senza disclaimer né richiesta codice → SCORE ATTUALE: 0<br>&nbsp;&nbsp;• Length OK (791 chars)</td>
+                <td class="response">I dati ufficiali sulla posizione dei fori nei piastrini laterali, dal disegno tecnico MAVBVDFI5232SCI (famiglia BVCI canale ispezionabile):
+
+Ogni piastrino laterale ha **2 fori**, diametro **∅6 mm**.
+
+**Posizione dei fori (dal centro del foro):**
+- Distanza dal fondo del piastrino: **31 mm**
+- Distanza dal bordo sinistro: **18,14 mm**
+- Distanza dal bordo destro: **14 mm**
+- Distanza tra i centri  ...</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T07</b></td>
+                <td>Qual è il peso della vasca?</td>
+                <td>ask_product_code_or_disclaimer</td>
+                <td><b>1.0</b></td>
+                <td>59737ms</td>
+                <td>&nbsp;&nbsp;• ambiguity_product: <b>1.0</b><br>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• Asks for product code ✓<br>&nbsp;&nbsp;• Length OK (209 chars)</td>
+                <td class="response">Non ho specificato il codice prodotto. Per la famiglia BVCI Canale Ispezionabile esistono 3 modelli attivi con quote diverse: MAVBVDFI5232SCI, MAVBVDFI6232SCI, MAVBVDFI7232SCI.
+
+Di quale codice prodotto parli?</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T08</b></td>
+                <td>Quanto è profonda la vasca?</td>
+                <td>ask_product_code_or_disclaimer</td>
+                <td><b>1.0</b></td>
+                <td>60938ms</td>
+                <td>&nbsp;&nbsp;• ambiguity_product: <b>1.0</b><br>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• Asks for product code ✓<br>&nbsp;&nbsp;• Length OK (104 chars)</td>
+                <td class="response">Di quale codice prodotto parli? I modelli attivi sono MAVBVDFI5232SCI, MAVBVDFI6232SCI, MAVBVDFI7232SCI.</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T09</b></td>
+                <td>Quali modelli di vasca hai?</td>
+                <td>list_active_family_only</td>
+                <td><b>0.83</b></td>
+                <td>51106ms</td>
+                <td>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• ambiguity_product: <b>0.5</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• No numeric data or ambiguity handling<br>&nbsp;&nbsp;• Length OK (426 chars)</td>
+                <td class="response">La famiglia attiva e BVCI — Canale Ispezionabile, segmento bagno. Tre modelli standard:
+
+MAVBVDFI5232SCI — modello base, lunghezza 5232 mm
+MAVBVDFI6232SCI — modello medio, lunghezza 6232 mm
+MAVBVDFI7232SCI — modello grande, lunghezza 7232 mm
+
+Tutti in acciaio AISI 304 spessore 0.8 mm, con fondo in pendenza verso canale, copricanale integrato e piastrini di supporto laterali. Spessori rivestimento  ...</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T10</b></td>
+                <td>Avete anche lavelli da cucina?</td>
+                <td>redirect_office</td>
+                <td><b>1.0</b></td>
+                <td>—</td>
+                <td>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (102 chars)</td>
+                <td class="response">Per informazioni sui lavelli da cucina e accessori, contatta l&#x27;ufficio commerciale Manifatture Acciai.</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T11</b></td>
+                <td>Sono un marmista non ho mai lavorato con le vasche perché dovrei cominciare ora </td>
+                <td>empathetic_technical_persuasion</td>
+                <td><b>0.93</b></td>
+                <td>—</td>
+                <td>&nbsp;&nbsp;• empathy: <b>1.0</b><br>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>0.8</b></td>
+                <td class="notes">&nbsp;&nbsp;• Empathy markers: 5<br>&nbsp;&nbsp;• Technical value markers: 6<br>&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Long response (1351 chars)</td>
+                <td class="response">Capisco perfettamente la tua posizione. Dopo 10 anni di lavoro hai metodi consolidati e sai cosa funziona.
+
+Non ti dico che il metodo tradizionale è sbagliato. Funziona, e lo sai bene. La vasca in acciaio non sostituisce la tua esperienza  la affianca come evoluzione tecnica.
+
+I vantaggi reali che introduce:
+
+- Guida geometrica  la vasca ti dà forma stabile e riferimento certo. Il rivestimento non ...</td>
+            </tr>
+            
+            <tr class="fail">
+                <td>❌ <b>T12</b></td>
+                <td>Non mi HAI dato dove devo fare i fori</td>
+                <td>pushback_correction</td>
+                <td><b>0.67</b></td>
+                <td>—</td>
+                <td>&nbsp;&nbsp;• empathy: <b>0.0</b><br>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• Missing markers: empathy=0, tech=0<br>&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (359 chars)</td>
+                <td class="response">Ho gia chiesto chiarimento su quali fori intendi. Senza questa informazione non posso procedere con i dati precisi.
+
+Nell&#x27;estratto del disegno BVCI 5232 sono documentati due tipi di fori:
+
+1. Fori piastrini laterali — diametro 6 mm, con posizioni specifiche
+2. Fori bordo superiore vasca — diametro 39 mm, 8 totali sul perimetro
+
+A quale dei due ti riferisci?</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T13</b></td>
+                <td>Quali materiali posso usare per rivestire la vasca BVCI?</td>
+                <td>list_exact_materials</td>
+                <td><b>1.0</b></td>
+                <td>103837ms</td>
+                <td>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• Materials list OK: 8/8<br>&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (681 chars)</td>
+                <td class="response">La famiglia BVCI (Canale Ispezionabile) e compatibile con i seguenti materiali per il rivestimento della vasca:
+
+- Gres
+- Pietre sinterizzate
+- Quarzo
+- Pietra naturale
+- HPL
+- Fenix
+- Corian
+- Solid surface
+- Altri materiali waterproof equivalenti
+
+Spessori rivestimento compatibili: da 6 mm a 12 mm.
+
+Il comportamento del sistema varia in base al materiale scelto. I materiali rigidi (gres, quarzo, ...</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T14</b></td>
+                <td>Posso rivestire la vasca con il legno?</td>
+                <td>negative_exact_materials</td>
+                <td><b>1.0</b></td>
+                <td>—</td>
+                <td>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• Negative formula present<br>&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (177 chars)</td>
+                <td class="response">Non compatibile. Materiali ufficiali: gres porcellanato, pietre sinterizzate, quarzo, pietra naturale, HPL, Fenix, Corian, solid surface, altri materiali waterproof equivalenti.</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T15</b></td>
+                <td>pensavo che il canale ispezionabile fosse una doccia a pavimento</td>
+                <td>correction_scope</td>
+                <td><b>1.0</b></td>
+                <td>94396ms</td>
+                <td>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (940 chars)</td>
+                <td class="response">Non è una doccia a pavimento. Il sistema BVCI canale ispezionabile è una **vasca da rivestimento** in acciaio inox AISI 304, pensata per il mondo bagno.
+
+Le differenze con una doccia a pavimento:
+
+- E una vasca rialzata, non una struttura filo pavimento
+- Ha un fondo in pendenza verso un **canale integrato** che permette ispezione e manutenzione diretta dello scarico
+- Il canale si chiude con un * ...</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T16</b></td>
+                <td>credevo che il copricanale si potesse ruotare con qualsiasi spessore</td>
+                <td>correction_scope</td>
+                <td><b>1.0</b></td>
+                <td>106631ms</td>
+                <td>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• Length OK (557 chars)</td>
+                <td class="response">No, non con qualsiasi spessore. Il comportamento del copricanale cambia in funzione dello spessore del rivestimento:
+
+Per spessori da 6 a 9 mm: il copricanale ruota completamente, si appoggia alla parete posteriore, il movimento e continuo.
+
+Per spessori da 10 a 12 mm: la rotazione non e completa. Il copricanale effettua una rotazione parziale e successivamente viene sfilato grazie alla geometria  ...</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T17</b></td>
+                <td>Voglio una vasca BVCI di 150 cm di lunghezza, è possibile?</td>
+                <td>redirect_office</td>
+                <td><b>1.0</b></td>
+                <td>113000ms</td>
+                <td>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (835 chars)</td>
+                <td class="response">La richiesta di una vasca BVCI lunga 150 cm e una richiesta custom/dimensionale non standard.
+
+I modelli standard della famiglia BVCI Canale Ispezionabile hanno lunghezze di circa 547 mm (MAVBVDFI5232SCI), 6232 e 7232 — nessuno arriva a 150 cm.
+
+Il sistema BVCI consente personalizzazioni della lunghezza: la sezione del canale resta fissa, mentre la vasca si adatta. Tuttavia, oltre i 90 cm il princ ...</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T19</b></td>
+                <td>Perché il legno non va bene in bagno?</td>
+                <td>negative_exact_materials</td>
+                <td><b>1.0</b></td>
+                <td>63808ms</td>
+                <td>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• Negative formula present<br>&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (312 chars)</td>
+                <td class="response">Non compatibile per il sistema Manifatture Acciai. Materiali ufficiali compatibili: gres porcellanato, pietre sinterizzate, quarzo, pietra naturale, HPL, Fenix, Corian, solid surface, altri materiali waterproof equivalenti.
+
+Il sistema classifica il legno tra i materiali assorbenti o non trattati per uso bagno.</td>
+            </tr>
+            
+            <tr class="pass">
+                <td>✅ <b>T20</b></td>
+                <td>Posso usare la vasca BVCI in cucina come lavello?</td>
+                <td>redirect_office</td>
+                <td><b>1.0</b></td>
+                <td>12575ms</td>
+                <td>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
+                <td class="notes">&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (102 chars)</td>
+                <td class="response">Per informazioni sui lavelli da cucina e accessori, contatta l&#x27;ufficio commerciale Manifatture Acciai.</td>
+            </tr>
+            
+    </table>
+</body>
+</html>

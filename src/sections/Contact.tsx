@@ -1,0 +1,331 @@
+import { useState, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { Mail, MapPin, Send, CheckCircle, Loader2 } from 'lucide-react'
+import { trpc } from '@/providers/trpc'
+
+gsap.registerPlugin(ScrollTrigger)
+
+export default function Contact() {
+  const { t } = useTranslation()
+  const sectionRef = useRef<HTMLDivElement>(null)
+
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+  })
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [isSubmitted, setIsSubmitted] = useState(false)
+
+  const createContact = trpc.contact.create.useMutation({
+    onSuccess: () => {
+      setIsSubmitted(true)
+      setFormData({ name: '', email: '', phone: '', message: '' })
+      setErrors({})
+    },
+    onError: (err) => {
+      const data = err.data as { zodError?: { fieldErrors?: Record<string, string[]> } } | undefined
+      if (data?.zodError?.fieldErrors) {
+        const fieldErrors: Record<string, string> = {}
+        Object.entries(data.zodError.fieldErrors).forEach(([key, value]) => {
+          if (value && value[0]) fieldErrors[key] = value[0]
+        })
+        setErrors(fieldErrors)
+      }
+    },
+  })
+
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+
+    gsap.fromTo(
+      section.querySelectorAll('.contact-reveal'),
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        stagger: 0.12,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 70%',
+          toggleActions: 'play none none reverse',
+        },
+      }
+    )
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill())
+    }
+  }, [])
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {}
+    if (formData.name.length < 2) newErrors.name = t('contact.error_name')
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = t('contact.error_email')
+    if (formData.message.length < 10) newErrors.message = t('contact.error_message')
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!validate()) return
+    createContact.mutate(formData)
+  }
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    if (errors[e.target.name]) {
+      setErrors((prev) => {
+        const next = { ...prev }
+        delete next[e.target.name]
+        return next
+      })
+    }
+  }
+
+  const inputBaseClass =
+    'w-full rounded-lg px-4 py-3 text-sm focus:outline-none transition-all'
+
+  return (
+    <section
+      id="contatti"
+      ref={sectionRef}
+      className="relative py-24 sm:py-32 px-6"
+      style={{ backgroundColor: 'var(--bg-primary)' }}
+    >
+      <div className="max-w-[1280px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          {/* Left Column */}
+          <div>
+            <h2
+              className="contact-reveal font-['Space_Grotesk'] font-bold text-3xl sm:text-4xl md:text-[40px] tracking-tight mb-6"
+              style={{ color: 'var(--text-primary)' }}
+            >
+              {t('contact.heading')}
+            </h2>
+            <p
+              className="contact-reveal text-base sm:text-lg leading-relaxed mb-10"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              {t('contact.body')}
+            </p>
+
+            <div className="space-y-6">
+              <div className="contact-reveal flex items-center gap-4">
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ backgroundColor: 'var(--accent-cyan-bg)' }}
+                >
+                  <Mail size={20} style={{ color: 'var(--accent-cyan)' }} />
+                </div>
+                <div>
+                  <p
+                    className="text-xs uppercase tracking-wider mb-1"
+                    style={{ color: 'var(--text-muted)' }}
+                  >
+                    {t('contact.email_label')}
+                  </p>
+                  <a
+                    href="mailto:caponi.ai.studio@gmail.com"
+                    className="hover:text-[var(--accent-cyan)] transition-colors"
+                    style={{ color: 'var(--text-primary)' }}
+                  >
+                    caponi.ai.studio@gmail.com
+                  </a>
+                </div>
+              </div>
+
+              <div className="contact-reveal flex items-center gap-4">
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ backgroundColor: 'var(--accent-cyan-bg)' }}
+                >
+                  <MapPin size={20} style={{ color: 'var(--accent-cyan)' }} />
+                </div>
+                <div>
+                  <p
+                    className="text-xs uppercase tracking-wider mb-1"
+                    style={{ color: 'var(--text-muted)' }}
+                  >
+                    {t('contact.location_label')}
+                  </p>
+                  <p style={{ color: 'var(--text-primary)' }}>
+                    {t('contact.location_value')}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Form */}
+          <div className="contact-reveal">
+            {isSubmitted ? (
+              <div
+                className="border rounded-2xl p-8 text-center"
+                style={{
+                  backgroundColor: 'var(--bg-card)',
+                  borderColor: 'rgba(16,185,129,0.3)',
+                }}
+              >
+                <CheckCircle size={48} className="text-[#10B981] mx-auto mb-4" />
+                <h3
+                  className="font-['Space_Grotesk'] font-semibold text-xl mb-2"
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  {t('contact.success_title')}
+                </h3>
+                <p style={{ color: 'var(--text-secondary)' }}>
+                  {t('contact.success_body')}
+                </p>
+                <button
+                  onClick={() => setIsSubmitted(false)}
+                  className="mt-6 text-sm hover:underline"
+                  style={{ color: 'var(--accent-cyan)' }}
+                >
+                  {t('contact.success_again')}
+                </button>
+              </div>
+            ) : (
+              <form
+                onSubmit={handleSubmit}
+                className="border rounded-2xl p-8 space-y-6"
+                style={{
+                  backgroundColor: 'var(--bg-card)',
+                  borderColor: 'var(--border-color)',
+                }}
+              >
+                <div>
+                  <label
+                    className="block text-xs uppercase tracking-wider mb-2"
+                    style={{ color: 'var(--text-muted)' }}
+                  >
+                    {t('contact.form_name')}
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className={`${inputBaseClass} border`}
+                    style={{
+                      backgroundColor: 'var(--bg-input)',
+                      borderColor: errors.name ? '#EF4444' : 'var(--border-color)',
+                      color: 'var(--text-primary)',
+                    }}
+                    placeholder={t('contact.form_name_placeholder')}
+                  />
+                  {errors.name && (
+                    <p className="text-[#EF4444] text-xs mt-1">{errors.name}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label
+                    className="block text-xs uppercase tracking-wider mb-2"
+                    style={{ color: 'var(--text-muted)' }}
+                  >
+                    {t('contact.form_email')}
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={`${inputBaseClass} border`}
+                    style={{
+                      backgroundColor: 'var(--bg-input)',
+                      borderColor: errors.email ? '#EF4444' : 'var(--border-color)',
+                      color: 'var(--text-primary)',
+                    }}
+                    placeholder={t('contact.form_email_placeholder')}
+                  />
+                  {errors.email && (
+                    <p className="text-[#EF4444] text-xs mt-1">{errors.email}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label
+                    className="block text-xs uppercase tracking-wider mb-2"
+                    style={{ color: 'var(--text-muted)' }}
+                  >
+                    {t('contact.form_phone')}
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className={`${inputBaseClass} border`}
+                    style={{
+                      backgroundColor: 'var(--bg-input)',
+                      borderColor: 'var(--border-color)',
+                      color: 'var(--text-primary)',
+                    }}
+                    placeholder={t('contact.form_phone_placeholder')}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    className="block text-xs uppercase tracking-wider mb-2"
+                    style={{ color: 'var(--text-muted)' }}
+                  >
+                    {t('contact.form_message')}
+                  </label>
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    rows={4}
+                    className={`${inputBaseClass} border resize-none`}
+                    style={{
+                      backgroundColor: 'var(--bg-input)',
+                      borderColor: errors.message ? '#EF4444' : 'var(--border-color)',
+                      color: 'var(--text-primary)',
+                    }}
+                    placeholder={t('contact.form_message_placeholder')}
+                  />
+                  {errors.message && (
+                    <p className="text-[#EF4444] text-xs mt-1">{errors.message}</p>
+                  )}
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={createContact.isPending}
+                  className="w-full flex items-center justify-center gap-2 font-semibold text-sm px-6 py-4 rounded-lg transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
+                  style={{
+                    backgroundColor: 'var(--accent-cyan)',
+                    color: 'var(--text-inverse)',
+                  }}
+                >
+                  {createContact.isPending ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      {t('contact.submit_loading')}
+                    </>
+                  ) : (
+                    <>
+                      <Send size={16} />
+                      {t('contact.submit')}
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}

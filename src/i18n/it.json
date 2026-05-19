@@ -1,0 +1,76 @@
+{
+  "nav": {
+    "services": "Servizi",
+    "technologies": "Tecnologie",
+    "contact": "Contatti"
+  },
+  "hero": {
+    "line1": "TRASFORMIAMO",
+    "line2": "LE IMPRESE",
+    "line3": "CON L'INTELLIGENZA ARTIFICIALE",
+    "description": "Soluzioni avanzate di automazione, agenti AI e sviluppo software per il futuro della tua azienda.",
+    "cta": "SCOPRI I NOSTRI SERVIZI"
+  },
+  "manifesto": {
+    "heading": "La nostra missione è riprogettare i processi aziendali attraverso l'automazione intelligente.",
+    "body": "Da CAIS, uniamo competenze tecniche di alto livello con una visione strategica. Integriamo agenti AI, workflow automatizzati e infrastrutture sicure per garantire competitività reale e misurabile.",
+    "cta": "ESPLORA LA NOSTRA VISIONE"
+  },
+  "tech": {
+    "heading": "Stack Tecnologico Avanzato",
+    "subheading": "Utilizziamo le tecnologie più innovative per costruire soluzioni robuste e scalabili.",
+    "card1_title": "AI & Machine Learning",
+    "card1_desc": "Sviluppo di modelli predittivi, agenti autonomi e sistemi di reasoning avanzato per automatizzare decisioni complesse.",
+    "card2_title": "Sicurezza & Infrastruttura",
+    "card2_desc": "Architetture sicure con framework di rete zero-trust, firewall avanzati e monitoraggio intrusioni in tempo reale.",
+    "card3_title": "Data & Knowledge",
+    "card3_desc": "Gestione avanzata delle conoscenze, database vettoriali per RAG e sistemi di memoria a lungo termine."
+  },
+  "services": {
+    "heading": "Servizi di Eccellenza",
+    "subheading": "Offriamo soluzioni end-to-end per la trasformazione digitale della tua azienda.",
+    "card1_title": "AI Agents & Automazione",
+    "card1_desc": "Agenti AI personalizzati che automatizzano flussi di lavoro complessi, riducendo i tempi operativi del 70%.",
+    "card2_title": "Sviluppo Software & Web",
+    "card2_desc": "Applicazioni web moderne, API scalabili e piattaforme digitali su misura per le esigenze aziendali.",
+    "card3_title": "Deploy & Infrastruttura",
+    "card3_desc": "Configurazione VPS, deploy locale, containerizzazione e monitoraggio continuo per massima affidabilità.",
+    "feature1_1": "CrewAI Workflows",
+    "feature1_2": "LangChain Integrations",
+    "feature1_3": "HERMES Orchestration",
+    "feature2_1": "React & TypeScript",
+    "feature2_2": "API RESTful",
+    "feature2_3": "Cloud-Native Apps",
+    "feature3_1": "TailScale VPN",
+    "feature3_2": "UFW + Fail2Ban",
+    "feature3_3": "VPS Management"
+  },
+  "contact": {
+    "heading": "Inizia la Trasformazione",
+    "body": "Contattaci per una consulenza strategica gratuita. Analizzeremo le tue esigenze e progetteremo una roadmap AI su misura.",
+    "email_label": "Email",
+    "location_label": "Location",
+    "location_value": "Italia — Consulenza Nazionale & Internazionale",
+    "form_name": "Nome Completo",
+    "form_email": "Email Aziendale",
+    "form_phone": "Telefono",
+    "form_message": "Messaggio",
+    "form_name_placeholder": "Mario Rossi",
+    "form_email_placeholder": "nome@azienda.it",
+    "form_phone_placeholder": "+39 123 456 7890",
+    "form_message_placeholder": "Descrivi il tuo progetto o le tue esigenze...",
+    "submit": "INVIA RICHIESTA",
+    "submit_loading": "Invio in corso...",
+    "success_title": "Grazie!",
+    "success_body": "Ti contatteremo entro 24 ore.",
+    "success_again": "Invia un altro messaggio",
+    "error_name": "Il nome deve contenere almeno 2 caratteri",
+    "error_email": "Inserisci un indirizzo email valido",
+    "error_message": "Il messaggio deve contenere almeno 10 caratteri"
+  },
+  "footer": {
+    "copyright": "© 2025 CAIS - Strategic AI Consulting. Tutti i diritti riservati.",
+    "privacy": "Privacy Policy",
+    "terms": "Termini di Servizio"
+  }
+}
