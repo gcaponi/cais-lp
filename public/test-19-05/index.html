@@ -27,7 +27,7 @@
 <body>
     <h1>🧪 Test Harness — Andrea V2</h1>
     <div class="meta">
-        Generated: 2026-05-19 19:01<br>
+        Generated: 2026-05-19 19:07<br>
         Model: unknown | Provider: unknown<br>
         Connector: file
     </div>
@@ -129,7 +129,7 @@
                 <td>Quanto costa una vasca BVCI 5232?</td>
                 <td>redirect_office</td>
                 <td><b>1.0</b></td>
-                <td>46911ms</td>
+                <td>46s</td>
                 <td>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
                 <td class="notes">&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (167 chars)</td>
                 <td class="response">Non ho questa informazione specifica nel mio sistema tecnico. Per questo livello di dettaglio contatta l&#x27;ufficio tecnico: info@manifattureacciai.com — +39 0732 040762.</td>
@@ -183,7 +183,7 @@ Stai parlando di:
                 <td>come si monta il canale?</td>
                 <td>disambiguation_process</td>
                 <td><b>1.0</b></td>
-                <td>64029ms</td>
+                <td>1m4s</td>
                 <td>&nbsp;&nbsp;• ambiguity_process: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
                 <td class="notes">&nbsp;&nbsp;• STOP/Ambiguity signal present<br>&nbsp;&nbsp;• Two or more numbered options present<br>&nbsp;&nbsp;• Length OK (182 chars)</td>
                 <td class="response">A quale fase di montaggio ti riferisci?
@@ -197,7 +197,7 @@ Stai parlando di:
                 <td>dimmi dove sono posizionato i fori nel piastrini laterali</td>
                 <td>ask_product_code_or_disclaimer</td>
                 <td><b>1.0</b></td>
-                <td>42000ms</td>
+                <td>42s</td>
                 <td>&nbsp;&nbsp;• ambiguity_product: <b>1.0</b><br>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
                 <td class="notes">&nbsp;&nbsp;• Asks for product code ✓<br>&nbsp;&nbsp;• Ground truth note: Dato 5232 senza disclaimer né richiesta codice → SCORE ATTUALE: 0<br>&nbsp;&nbsp;• Length OK (150 chars)</td>
                 <td class="response">Ho trovato 3 modelli attivi nella famiglia BVCI canale ispezionabile che montano piastrini laterali: 5232, 6232, 7232. Di quale codice prodotto parli?</td>
@@ -208,7 +208,7 @@ Stai parlando di:
                 <td>Qual è il peso della vasca?</td>
                 <td>ask_product_code_or_disclaimer</td>
                 <td><b>1.0</b></td>
-                <td>59737ms</td>
+                <td>59s</td>
                 <td>&nbsp;&nbsp;• ambiguity_product: <b>1.0</b><br>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
                 <td class="notes">&nbsp;&nbsp;• Asks for product code ✓<br>&nbsp;&nbsp;• Length OK (209 chars)</td>
                 <td class="response">Non ho specificato il codice prodotto. Per la famiglia BVCI Canale Ispezionabile esistono 3 modelli attivi con quote diverse: MAVBVDFI5232SCI, MAVBVDFI6232SCI, MAVBVDFI7232SCI.
@@ -221,7 +221,7 @@ Di quale codice prodotto parli?</td>
                 <td>Quanto è profonda la vasca?</td>
                 <td>ask_product_code_or_disclaimer</td>
                 <td><b>1.0</b></td>
-                <td>60938ms</td>
+                <td>1m0s</td>
                 <td>&nbsp;&nbsp;• ambiguity_product: <b>1.0</b><br>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
                 <td class="notes">&nbsp;&nbsp;• Asks for product code ✓<br>&nbsp;&nbsp;• Length OK (104 chars)</td>
                 <td class="response">Di quale codice prodotto parli? I modelli attivi sono MAVBVDFI5232SCI, MAVBVDFI6232SCI, MAVBVDFI7232SCI.</td>
@@ -232,7 +232,7 @@ Di quale codice prodotto parli?</td>
                 <td>Quali modelli di vasca hai?</td>
                 <td>list_active_family_only</td>
                 <td><b>0.83</b></td>
-                <td>51106ms</td>
+                <td>51s</td>
                 <td>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• ambiguity_product: <b>0.5</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
                 <td class="notes">&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• No numeric data or ambiguity handling<br>&nbsp;&nbsp;• Length OK (426 chars)</td>
                 <td class="response">La famiglia attiva e BVCI — Canale Ispezionabile, segmento bagno. Tre modelli standard:
@@ -295,7 +295,7 @@ A quale dei due ti riferisci?</td>
                 <td>Quali materiali posso usare per rivestire la vasca BVCI?</td>
                 <td>list_exact_materials</td>
                 <td><b>1.0</b></td>
-                <td>103837ms</td>
+                <td>1m43s</td>
                 <td>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
                 <td class="notes">&nbsp;&nbsp;• Materials list OK: 8/8<br>&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (681 chars)</td>
                 <td class="response">La famiglia BVCI (Canale Ispezionabile) e compatibile con i seguenti materiali per il rivestimento della vasca:
@@ -331,7 +331,7 @@ Il comportamento del sistema varia in base al materiale scelto. I materiali rigi
                 <td>pensavo che il canale ispezionabile fosse una doccia a pavimento</td>
                 <td>correction_scope</td>
                 <td><b>1.0</b></td>
-                <td>94396ms</td>
+                <td>1m34s</td>
                 <td>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
                 <td class="notes">&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (940 chars)</td>
                 <td class="response">Non è una doccia a pavimento. Il sistema BVCI canale ispezionabile è una **vasca da rivestimento** in acciaio inox AISI 304, pensata per il mondo bagno.
@@ -348,7 +348,7 @@ Le differenze con una doccia a pavimento:
                 <td>credevo che il copricanale si potesse ruotare con qualsiasi spessore</td>
                 <td>correction_scope</td>
                 <td><b>1.0</b></td>
-                <td>106631ms</td>
+                <td>1m46s</td>
                 <td>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
                 <td class="notes">&nbsp;&nbsp;• Length OK (557 chars)</td>
                 <td class="response">No, non con qualsiasi spessore. Il comportamento del copricanale cambia in funzione dello spessore del rivestimento:
@@ -363,7 +363,7 @@ Per spessori da 10 a 12 mm: la rotazione non e completa. Il copricanale effettua
                 <td>Voglio una vasca BVCI di 150 cm di lunghezza, è possibile?</td>
                 <td>redirect_office</td>
                 <td><b>1.0</b></td>
-                <td>113000ms</td>
+                <td>1m53s</td>
                 <td>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
                 <td class="notes">&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (835 chars)</td>
                 <td class="response">La richiesta di una vasca BVCI lunga 150 cm e una richiesta custom/dimensionale non standard.
@@ -378,7 +378,7 @@ Il sistema BVCI consente personalizzazioni della lunghezza: la sezione del canal
                 <td>Perché il legno non va bene in bagno?</td>
                 <td>negative_exact_materials</td>
                 <td><b>1.0</b></td>
-                <td>63808ms</td>
+                <td>1m3s</td>
                 <td>&nbsp;&nbsp;• accuracy: <b>1.0</b><br>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
                 <td class="notes">&nbsp;&nbsp;• Negative formula present<br>&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (312 chars)</td>
                 <td class="response">Non compatibile per il sistema Manifatture Acciai. Materiali ufficiali compatibili: gres porcellanato, pietre sinterizzate, quarzo, pietra naturale, HPL, Fenix, Corian, solid surface, altri materiali waterproof equivalenti.
@@ -391,7 +391,7 @@ Il sistema classifica il legno tra i materiali assorbenti o non trattati per uso
                 <td>Posso usare la vasca BVCI in cucina come lavello?</td>
                 <td>redirect_office</td>
                 <td><b>1.0</b></td>
-                <td>12575ms</td>
+                <td>12s</td>
                 <td>&nbsp;&nbsp;• boundary: <b>1.0</b><br>&nbsp;&nbsp;• tone: <b>1.0</b></td>
                 <td class="notes">&nbsp;&nbsp;• No commercial leakage detected<br>&nbsp;&nbsp;• Length OK (102 chars)</td>
                 <td class="response">Per informazioni sui lavelli da cucina e accessori, contatta l&#x27;ufficio commerciale Manifatture Acciai.</td>
