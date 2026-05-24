@@ -19,10 +19,12 @@ export default function Contact() {
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [emailStatus, setEmailStatus] = useState<{ sent: boolean; error: string | null }>({ sent: false, error: null })
 
   const createContact = trpc.contact.create.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
       setIsSubmitted(true)
+      setEmailStatus({ sent: data.emailSent, error: data.emailError })
       setFormData({ name: '', email: '', phone: '', message: '' })
       setErrors({})
     },
@@ -173,10 +175,10 @@ export default function Contact() {
                 className="border rounded-2xl p-8 text-center"
                 style={{
                   backgroundColor: 'var(--bg-card)',
-                  borderColor: 'rgba(16,185,129,0.3)',
+                  borderColor: emailStatus.sent ? 'rgba(16,185,129,0.3)' : 'rgba(253,137,37,0.3)',
                 }}
               >
-                <CheckCircle size={48} className="text-[#10B981] mx-auto mb-4" />
+                <CheckCircle size={48} className={emailStatus.sent ? "text-[#10B981] mx-auto mb-4" : "text-[#fd8925] mx-auto mb-4"} />
                 <h3
                   className="font-['Space_Grotesk'] font-semibold text-xl mb-2"
                   style={{ color: 'var(--text-primary)' }}
@@ -186,8 +188,14 @@ export default function Contact() {
                 <p style={{ color: 'var(--text-secondary)' }}>
                   {t('contact.success_body')}
                 </p>
+                {!emailStatus.sent && (
+                  <div className="mt-4 p-3 rounded-lg text-sm" style={{ backgroundColor: 'rgba(253,137,37,0.08)', color: '#fd8925', border: '1px solid rgba(253,137,37,0.2)' }}>
+                    <p className="font-medium mb-1">Email notification not sent</p>
+                    <p style={{ color: 'var(--text-secondary)' }}>The message was saved in the database. Add SMTP credentials to receive email notifications.</p>
+                  </div>
+                )}
                 <button
-                  onClick={() => setIsSubmitted(false)}
+                  onClick={() => { setIsSubmitted(false); setEmailStatus({ sent: false, error: null }) }}
                   className="mt-6 text-sm hover:underline"
                   style={{ color: 'var(--accent-cyan)' }}
                 >

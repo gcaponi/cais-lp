@@ -18,8 +18,9 @@ export default function Navigation() {
   }, [])
 
   const navItems = [
+    { label: 'OpenClaw', href: '#openclaw' },
+    { label: 'HERMES', href: '#hermes' },
     { label: t('nav.services'), href: '#servizi' },
-    { label: t('nav.technologies'), href: '#tecnologie' },
     { label: t('nav.contact'), href: '#contatti' },
   ]
 
