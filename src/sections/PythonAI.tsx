@@ -54,7 +54,7 @@ export default function PythonAI() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           <div className="py-reveal rounded-2xl overflow-hidden border" style={{ borderColor: 'var(--border-color)' }}>
-            <img src="/api/images/python-ai-dev.jpg" alt="Python AI Development" className="w-full h-full object-cover min-h-[320px]" />
+            <img src="/python-ai-dev.jpg" alt="Python AI Development" className="w-full h-full object-cover min-h-[320px]" />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -57,7 +57,7 @@ export default function Hermes() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           <div className="hm-reveal rounded-2xl overflow-hidden border order-2 lg:order-1" style={{ borderColor: 'var(--border-color)' }}>
-            <img src="/api/images/hermes-agent.jpg" alt="HERMES Agent" className="w-full h-full object-cover min-h-[320px]" />
+            <img src="/hermes-agent.jpg" alt="HERMES Agent" className="w-full h-full object-cover min-h-[320px]" />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 order-1 lg:order-2">

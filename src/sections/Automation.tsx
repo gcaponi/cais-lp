@@ -53,7 +53,7 @@ export default function Automation() {
         </div>
 
         <div className="auto-reveal mb-12 rounded-2xl overflow-hidden border" style={{ borderColor: 'var(--border-color)' }}>
-          <img src="/api/images/automation-workflow.jpg" alt="Automation Workflow" className="w-full h-auto object-cover max-h-[400px]" />
+          <img src="/automation-workflow.jpg" alt="Automation Workflow" className="w-full h-auto object-cover max-h-[400px]" />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

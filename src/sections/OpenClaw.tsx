@@ -58,7 +58,7 @@ export default function OpenClaw() {
 
         {/* Image */}
         <div className="oc-reveal mb-12 rounded-2xl overflow-hidden border" style={{ borderColor: 'var(--border-color)' }}>
-          <img src="/api/images/openclaw-hero.jpg" alt="OpenClaw" className="w-full h-auto object-cover max-h-[400px]" />
+          <img src="/openclaw-hero.jpg" alt="OpenClaw" className="w-full h-auto object-cover max-h-[400px]" />
         </div>
 
         {/* Features Grid */}
