@@ -2,11 +2,11 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Network, Brain, Lightbulb, Server } from 'lucide-react'
+import { Brain, Database, Cpu, Code } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const icons = [Network, Brain, Lightbulb, Server]
+const icons = [Brain, Database, Cpu, Code]
 
 export default function Hermes() {
   const { t } = useTranslation()
@@ -57,7 +57,7 @@ export default function Hermes() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           <div className="hm-reveal rounded-2xl overflow-hidden border order-2 lg:order-1" style={{ borderColor: 'var(--border-color)' }}>
-            <img src="/hermes-agent.jpg" alt="HERMES Agent" className="w-full h-full object-cover min-h-[320px]" />
+            <img src="/api/images/hermes-agent.jpg" alt="HERMES Agent" className="w-full h-full object-cover min-h-[320px]" />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 order-1 lg:order-2">

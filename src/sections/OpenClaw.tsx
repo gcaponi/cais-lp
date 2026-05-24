@@ -2,11 +2,11 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Cpu, Plug, ShieldCheck, TrendingUp } from 'lucide-react'
+import { Wrench, Cog, Rocket, ShieldCheck } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const icons = [Cpu, Plug, ShieldCheck, TrendingUp]
+const icons = [Wrench, Cog, Rocket, ShieldCheck]
 
 export default function OpenClaw() {
   const { t } = useTranslation()
@@ -58,7 +58,7 @@ export default function OpenClaw() {
 
         {/* Image */}
         <div className="oc-reveal mb-12 rounded-2xl overflow-hidden border" style={{ borderColor: 'var(--border-color)' }}>
-          <img src="/openclaw-hero.jpg" alt="OpenClaw" className="w-full h-auto object-cover max-h-[400px]" />
+          <img src="/api/images/openclaw-hero.jpg" alt="OpenClaw" className="w-full h-auto object-cover max-h-[400px]" />
         </div>
 
         {/* Features Grid */}

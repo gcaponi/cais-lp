@@ -1,57 +1,29 @@
 import nodemailer from "nodemailer";
 import { env } from "./env";
-import { getRuntimeSmtpConfig } from "../routers/config";
 
 // Singleton transporter
 let transporter: nodemailer.Transporter | null = null;
-let lastConfig: string | null = null;
-
-function getSmtpSettings() {
-  // 1. Check runtime config (set via /setup page)
-  const runtime = getRuntimeSmtpConfig();
-  if (runtime) {
-    return {
-      host: runtime.host,
-      port: Number(runtime.port),
-      user: runtime.user,
-      pass: runtime.pass,
-    };
-  }
-  // 2. Check env config
-  if (env.smtpUser && env.smtpPass && env.smtpPass !== "INSERISCI_APP_PASSWORD_QUI") {
-    return {
-      host: env.smtpHost || "smtp.gmail.com",
-      port: Number(env.smtpPort || 587),
-      user: env.smtpUser,
-      pass: env.smtpPass,
-    };
-  }
-  return null;
-}
 
 function getTransporter(): nodemailer.Transporter | null {
-  const settings = getSmtpSettings();
-  if (!settings) return null;
-
-  const configKey = `${settings.host}:${settings.port}:${settings.user}:${settings.pass}`;
-  if (!transporter || lastConfig !== configKey) {
+  if (!env.smtpUser || !env.smtpPass) return null;
+  
+  if (!transporter) {
     transporter = nodemailer.createTransport({
-      host: settings.host,
-      port: settings.port,
+      host: env.smtpHost || "smtp.gmail.com",
+      port: Number(env.smtpPort || 587),
       secure: false,
       requireTLS: true,
       auth: {
-        user: settings.user,
-        pass: settings.pass,
+        user: env.smtpUser,
+        pass: env.smtpPass,
       },
     });
-    lastConfig = configKey;
   }
   return transporter;
 }
 
 export function isEmailConfigured(): boolean {
-  return !!getSmtpSettings();
+  return !!env.smtpUser && !!env.smtpPass;
 }
 
 export async function sendContactEmail(data: {
@@ -60,10 +32,11 @@ export async function sendContactEmail(data: {
   phone?: string | null;
   message: string;
 }): Promise<{ success: boolean; error?: string }> {
+  // Check if email is configured
   if (!isEmailConfigured()) {
-    return {
-      success: false,
-      error: "SMTP_NOT_CONFIGURED: Configure in /setup or set env vars",
+    return { 
+      success: false, 
+      error: "SMTP_NOT_CONFIGURED: Add SMTP_USER and SMTP_PASS to your .env file" 
     };
   }
 
@@ -72,12 +45,9 @@ export async function sendContactEmail(data: {
     return { success: false, error: "TRANSPORT_ERROR" };
   }
 
-  const settings = getSmtpSettings();
-  if (!settings) return { success: false, error: "NO_SETTINGS" };
-
   try {
     await mailer.sendMail({
-      from: `"CAIS Website" <${settings.user}>`,
+      from: `"CAIS Website" <${env.smtpUser}>`,
       to: "caponi.ai.studio@gmail.com",
       replyTo: data.email,
       subject: `[CAIS Contact] Nuovo messaggio da ${data.name}`,
