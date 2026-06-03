@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZEUS v2.0 — PRD | C.A.I.S</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a237e 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .header .logo {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: white;
+            padding: 60px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .hero h1 {
+            font-size: 42px;
+            color: #0a0e27;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .hero .version {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        
+        .hero .tagline {
+            font-size: 20px;
+            color: #666;
+            font-style: italic;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        
+        /* Video Section */
+        .video-section {
+            background: #f0f2f5;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        .video-section h2 {
+            font-size: 28px;
+            color: #0a0e27;
+            margin-bottom: 30px;
+        }
+        
+        .video-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+        
+        .video-caption {
+            padding: 20px;
+            background: white;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* PDF Section */
+        .pdf-section {
+            background: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        .pdf-section h2 {
+            font-size: 28px;
+            color: #0a0e27;
+            margin-bottom: 20px;
+        }
+        
+        .pdf-section .description {
+            font-size: 16px;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        .pdf-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 35px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #1a237e;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0a0e27;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(26,35,126,0.3);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #1a237e;
+            border: 2px solid #1a237e;
+        }
+        
+        .btn-secondary:hover {
+            background: #f0f2f5;
+            transform: translateY(-2px);
+        }
+        
+        .pdf-preview {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #f0f2f5;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .pdf-preview iframe {
+            width: 100%;
+            height: 700px;
+            border: none;
+            border-radius: 8px;
+            background: white;
+        }
+        
+        /* Info Section */
+        .info-section {
+            background: linear-gradient(135deg, #f0f2f5 0%, #e8eaf6 100%);
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 900px;
+            margin: 40px auto 0;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .info-card .icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        
+        .info-card h3 {
+            font-size: 18px;
+            color: #0a0e27;
+            margin-bottom: 10px;
+        }
+        
+        .info-card p {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #0a0e27;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .footer .logo {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .footer p {
+            opacity: 0.8;
+            font-size: 14px;
+        }
+        
+        .footer .copyright {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 12px;
+            opacity: 0.6;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header .logo {
+                font-size: 36px;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .pdf-preview iframe {
+                height: 400px;
+            }
+            
+            .pdf-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">C.A.I.S</div>
+        <div class="subtitle">Consulting AI Strategic</div>
+    </header>
+    
+    <!-- Hero -->
+    <section class="hero">
+        <h1>ZEUS</h1>
+        <div class="version">v2.0 — PRD Completo</div>
+        <p class="tagline">
+            "Zero ipotesi. Zero codice.<br>
+            Il tuo agente tecnico, nato dai tuoi dati."
+        </p>
+    </section>
+    
+    <!-- Video Demo -->
+    <section class="video-section">
+        <h2>🎬 Demo Interattiva</h2>
+        <div class="video-container">
+            <video controls poster="zeus-demo-thumb.jpg">
+                <source src="zeus-demo-video.mp4" type="video/mp4">
+                Il tuo browser non supporta il tag video.
+            </video>
+            <div class="video-caption">
+                Video dimostrativo del flusso ZEUS — 35 secondi, 8 scene
+            </div>
+        </div>
+    </section>
+    
+    <!-- PDF Document -->
+    <section class="pdf-section">
+        <h2>📋 Product Requirements Document</h2>
+        <p class="description">
+            Il PRD completo di ZEUS v2.0 — Meta-Framework Knowledge Engineering per Agenti Tecnici AI.
+            Documentazione tecnica, architettura, stack tecnologico e piano di implementazione.
+        </p>
+        
+        <div class="pdf-actions">
+            <a href="ZEUS_PRD_v2.0.pdf" download class="btn btn-primary">
+                <span>⬇️</span> Scarica PDF
+            </a>
+            <a href="ZEUS_PRD_v2.0.pdf" target="_blank" class="btn btn-secondary">
+                <span>👁️</span> Apri in Nuova Scheda
+            </a>
+        </div>
+        
+        <div class="pdf-preview">
+            <iframe src="ZEUS_PRD_v2.0.pdf" title="ZEUS PRD v2.0">
+                Il tuo browser non supporta la visualizzazione PDF. 
+                <a href="ZEUS_PRD_v2.0.pdf">Scarica il PDF</a>
+            </iframe>
+        </div>
+    </section>
+    
+    <!-- Info Cards -->
+    <section class="info-section">
+        <h2>🚀 Caratteristiche Principali</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="icon">🤖</div>
+                <h3>Agente Tecnico AI</h3>
+                <p>Genera automaticamente un agente tecnico specializzato per la tua azienda manifatturiera</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">📊</div>
+                <h3>DNA Aziendale</h3>
+                <p>Estrae e struttura la knowledge base dal sito web e dalle fonti tecniche</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">🏭</div>
+                <h3>Famiglie Prodotto</h3>
+                <p>Gestisce infinite famiglie prodotto con questionario intelligente generato dinamicamente</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">⚡</div>
+                <h3>Deploy Automatico</h3>
+                <p>Dalla KB all'agente operativo in produzione con un solo click</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="logo">C.A.I.S</div>
+        <p>Consulting AI Strategic</p>
+        <p>Zero ipotesi. Zero codice. Il tuo agente tecnico, nato dai tuoi dati.</p>
+        <div class="copyright">
+            © 2026 C.A.I.S — Tutti i diritti riservati. Documento Confidenziale.
+        </div>
+    </footer>
+</body>
+</html>
