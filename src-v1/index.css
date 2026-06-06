@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light theme variables */
+    --bg-primary: #F8FAFC;
+    --bg-secondary: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-input: #F1F5F9;
+    --border-color: #E2E8F0;
+    --border-hover: #CBD5E1;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #64748B;
+    --text-inverse: #FFFFFF;
+    --accent-cyan: #0891B2;
+    --accent-cyan-light: #22D3EE;
+    --accent-cyan-bg: rgba(8, 145, 178, 0.1);
+    --glow-cyan: rgba(34, 211, 238, 0.3);
+
+    /* shadcn overrides for light */
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 188 94% 43%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 188 94% 43%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 188 94% 43%;
+    --radius: 0.625rem;
+  }
+
+  .dark {
+    /* Dark theme variables */
+    --bg-primary: #030712;
+    --bg-secondary: #0B1120;
+    --bg-card: #0B1120;
+    --bg-input: #111827;
+    --border-color: #111827;
+    --border-hover: #1a2332;
+    --text-primary: #FFFFFF;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    --text-inverse: #0F172A;
+    --accent-cyan: #22D3EE;
+    --accent-cyan-light: #06B6D4;
+    --accent-cyan-bg: rgba(34, 211, 238, 0.1);
+    --glow-cyan: rgba(34, 211, 238, 0.3);
+
+    /* shadcn overrides for dark */
+    --background: 220 30% 4%;
+    --foreground: 0 0% 100%;
+    --card: 220 25% 8%;
+    --card-foreground: 0 0% 100%;
+    --popover: 220 25% 8%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 187 94% 43%;
+    --primary-foreground: 220 30% 4%;
+    --secondary: 220 20% 12%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 15% 15%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 187 94% 43%;
+    --accent-foreground: 220 30% 4%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 220 15% 18%;
+    --input: 220 15% 15%;
+    --ring: 187 94% 43%;
+  }
+
+  body {
+    @apply antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    color: var(--text-primary);
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-cyan-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glow-cyan {
+    box-shadow: 0 0 20px var(--glow-cyan), 0 0 40px rgba(34, 211, 238, 0.1);
+  }
+}
