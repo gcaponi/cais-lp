@@ -1,133 +1,111 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Globe2, Menu, Moon, Sun, X, ChevronRight } from 'lucide-react'
 import { useTheme } from '@/context/ThemeContext'
 import { useLanguage } from '@/context/LanguageContext'
-import { Menu, X, Sun, Moon, Globe } from 'lucide-react'
 
-export default function Navigation() {
+type NavItem = { label: string; href: string }
+type SupportedLanguage = 'it' | 'en' | 'pt-BR'
+
+const supportedLanguages: Array<{ code: SupportedLanguage; label: string }> = [
+  { code: 'it', label: 'IT' },
+  { code: 'en', label: 'EN' },
+  { code: 'pt-BR', label: 'PT' },
+]
+
+type NavigationProps = { items: NavItem[] }
+
+export default function Navigation({ items }: NavigationProps) {
   const { t } = useTranslation()
   const { theme, toggleTheme } = useTheme()
-  const { language, toggleLanguage } = useLanguage()
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileOpen, setIsMobileOpen] = useState(false)
+  const { language, setLanguage } = useLanguage()
+  const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const navItems = [
-    { label: 'OpenClaw', href: '#openclaw' },
-    { label: 'HERMES', href: '#hermes' },
-    { label: t('nav.services'), href: '#servizi' },
-    { label: t('nav.contact'), href: '#contatti' },
-  ]
-
-  const scrollTo = (href: string) => {
-    setIsMobileOpen(false)
-    const el = document.querySelector(href)
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  const goTo = (href: string) => {
+    setOpen(false)
+    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
-  return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled
-          ? 'bg-[var(--bg-primary)]/90 backdrop-blur-md border-b border-[var(--border-color)]'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="font-['Space_Grotesk'] font-bold text-xl tracking-tight" style={{ color: 'var(--text-primary)' }}>
-            CAIS
-          </span>
-          <span className="hidden sm:inline text-xs font-medium tracking-[0.2em] uppercase" style={{ color: 'var(--accent-cyan)' }}>
-            Strategic AI Consulting
-          </span>
-        </div>
+  const themeLabel = theme === 'dark' ? t('nav.theme_light') : t('nav.theme_dark')
+  const languageGroupLabel = t('nav.language')
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-6">
-          {navItems.map((item) => (
+  return (
+    <header className={`site-nav ${scrolled ? 'site-nav--scrolled' : ''}`}>
+      <button className="brand-mark" type="button" onClick={() => goTo('#top')} aria-label="CAIS home">
+        <span className="brand-mark__glyph">
+          <img src="/cais-logo-512.png" alt="" width={48} height={48} />
+        </span>
+        <span>
+          <strong>CAIS</strong>
+          <small>Strategic AI Consulting</small>
+        </span>
+      </button>
+
+      <nav className="site-nav__links" aria-label={t('nav.menu')}>
+        {items.map((item) => (
+          <button key={item.href} type="button" onClick={() => goTo(item.href)}>
+            {item.label}
+          </button>
+        ))}
+      </nav>
+
+      <div className="site-nav__actions">
+        <div className="language-switcher" aria-label={languageGroupLabel}>
+          <Globe2 size={16} />
+          {supportedLanguages.map((item) => (
             <button
-              key={item.href}
-              onClick={() => scrollTo(item.href)}
-              className="text-sm font-medium transition-colors duration-300 hover:text-[var(--accent-cyan)]"
-              style={{ color: 'var(--text-secondary)' }}
+              key={item.code}
+              type="button"
+              className={item.code === language ? 'language-option language-option--active' : 'language-option'}
+              onClick={() => setLanguage(item.code)}
+              aria-pressed={item.code === language}
             >
               {item.label}
             </button>
           ))}
-
-          {/* Language Toggle */}
-          <button
-            onClick={toggleLanguage}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-semibold transition-all duration-300 hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)]"
-            style={{ borderColor: 'var(--border-color)', color: 'var(--text-muted)' }}
-            title={language === 'it' ? 'Switch to English' : 'Passa all\'Italiano'}
-          >
-            <Globe size={14} />
-            {language.toUpperCase()}
-          </button>
-
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="flex items-center justify-center w-9 h-9 rounded-full border transition-all duration-300 hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)]"
-            style={{ borderColor: 'var(--border-color)', color: 'var(--text-muted)' }}
-            title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
-          >
-            {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
         </div>
-
-        {/* Mobile Toggle */}
+        <button type="button" className="icon-button" onClick={toggleTheme} aria-label={themeLabel} title={themeLabel}>
+          {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
+        </button>
         <button
-          className="md:hidden p-2"
-          onClick={() => setIsMobileOpen(!isMobileOpen)}
-          style={{ color: 'var(--text-primary)' }}
+          type="button"
+          className="icon-button icon-button--mobile"
+          onClick={() => setOpen((value) => !value)}
+          aria-label={open ? t('nav.close_menu') : t('nav.open_menu')}
         >
-          {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
+          {open ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
-      {isMobileOpen && (
-        <div className="md:hidden border-t" style={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--border-color)' }}>
-          <div className="flex flex-col p-6 gap-4">
-            {navItems.map((item) => (
-              <button
-                key={item.href}
-                onClick={() => scrollTo(item.href)}
-                className="text-left text-lg font-medium transition-colors hover:text-[var(--accent-cyan)]"
-                style={{ color: 'var(--text-secondary)' }}
-              >
-                {item.label}
-              </button>
-            ))}
-            <div className="flex items-center gap-4 pt-4 border-t" style={{ borderColor: 'var(--border-color)' }}>
-              <button
-                onClick={toggleLanguage}
-                className="flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-semibold"
-                style={{ borderColor: 'var(--border-color)', color: 'var(--text-muted)' }}
-              >
-                <Globe size={16} />
-                {language.toUpperCase()}
-              </button>
-              <button
-                onClick={toggleTheme}
-                className="flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-semibold"
-                style={{ borderColor: 'var(--border-color)', color: 'var(--text-muted)' }}
-              >
-                {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-                {theme === 'dark' ? 'Light' : 'Dark'}
-              </button>
-            </div>
-          </div>
+      <div className={`mobile-panel ${open ? 'mobile-panel--open' : ''}`}>
+        {items.map((item) => (
+          <button key={item.href} type="button" onClick={() => goTo(item.href)}>
+            {item.label}
+            <ChevronRight size={18} />
+          </button>
+        ))}
+        <div className="mobile-language-row" aria-label={languageGroupLabel}>
+          {supportedLanguages.map((item) => (
+            <button
+              key={item.code}
+              type="button"
+              className={item.code === language ? 'language-option language-option--active' : 'language-option'}
+              onClick={() => setLanguage(item.code)}
+              aria-pressed={item.code === language}
+            >
+              {item.label}
+            </button>
+          ))}
         </div>
-      )}
-    </nav>
+      </div>
+    </header>
   )
 }

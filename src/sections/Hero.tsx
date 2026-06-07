@@ -1,90 +1,133 @@
-import { useEffect, useRef } from 'react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import gsap from 'gsap'
-import { ArrowDown } from 'lucide-react'
+import { ArrowDown, ArrowUpRight, Bot, BrainCircuit, ShieldCheck, Workflow } from 'lucide-react'
+import { MagneticButton } from '@/components/MagneticButton'
 
-export default function Hero() {
+type HeroProps = { onCta: () => void }
+
+export default function Hero({ onCta }: HeroProps) {
   const { t } = useTranslation()
-  const containerRef = useRef<HTMLDivElement>(null)
-  const line1Ref = useRef<HTMLDivElement>(null)
-  const line2Ref = useRef<HTMLDivElement>(null)
-  const line3Ref = useRef<HTMLDivElement>(null)
-  const descRef = useRef<HTMLParagraphElement>(null)
-  const ctaRef = useRef<HTMLButtonElement>(null)
 
-  useEffect(() => {
-    const tl = gsap.timeline({ delay: 2.5 })
-    
-    tl.to(line1Ref.current, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
-      .to(line2Ref.current, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6')
-      .to(line3Ref.current, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6')
-      .to(descRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.4')
-      .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.4')
+  const proof = useMemo(
+    () => [
+      { value: t('hero.proof_1_value'), label: t('hero.proof_1_label') },
+      { value: t('hero.proof_2_value'), label: t('hero.proof_2_label') },
+      { value: t('hero.proof_3_value'), label: t('hero.proof_3_label') },
+    ],
+    [t],
+  )
 
-    return () => { tl.kill() }
-  }, [])
-
-  const scrollToServices = () => {
-    const el = document.querySelector('#servizi')
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
-  }
+  const agents = useMemo(
+    () => [
+      { name: t('hero.agent_strategy'), tag: t('hero.agent_strategy_tag'), value: 92 },
+      { name: t('hero.agent_ops'), tag: t('hero.agent_ops_tag'), value: 78 },
+      { name: t('hero.agent_data'), tag: t('hero.agent_data_tag'), value: 65 },
+    ],
+    [t],
+  )
 
   return (
-    <section
-      ref={containerRef}
-      className="relative min-h-screen flex flex-col items-center justify-center px-6"
-    >
-      <div className="max-w-[1280px] w-full text-center">
-        <div className="flex flex-col items-center gap-2 mb-8">
-          <div
-            ref={line1Ref}
-            className="opacity-0 translate-y-8 font-['Space_Grotesk'] font-bold text-5xl sm:text-6xl md:text-7xl lg:text-[90px] tracking-tight leading-[1.1]"
-            style={{ color: 'var(--text-primary)' }}
-          >
-            {t('hero.line1')}
+    <section id="top" className="hero-section">
+      <div className="hero-bg" aria-hidden="true">
+        <div className="hero-aura" />
+        <div className="hero-grid" />
+        <div className="hero-brain-bg">
+          <img src="/cais-brand.jpg" alt="" loading="eager" decoding="async" />
+        </div>
+        <div className="floating-node floating-node--one" />
+        <div className="floating-node floating-node--two" />
+        <div className="floating-node floating-node--three" />
+        <div className="floating-node floating-node--four" />
+      </div>
+
+      <div className="hero-layout">
+        <div className="hero-content">
+          <div className="hero-kicker hero-copy">
+            <span className="pulse-dot" />
+            <span>{t('hero.kicker')}</span>
           </div>
-          <div
-            ref={line2Ref}
-            className="opacity-0 translate-y-8 font-['Space_Grotesk'] font-bold text-5xl sm:text-6xl md:text-7xl lg:text-[90px] tracking-tight leading-[1.1]"
-            style={{ color: 'var(--text-primary)' }}
-          >
-            {t('hero.line2')}
+
+          <h1 className="hero-title" aria-label={`${t('hero.line1')} ${t('hero.line2')} ${t('hero.line3')}`}>
+            <span className="hero-title__mask">
+              <span className="hero-title-line">{t('hero.line1')}</span>
+            </span>
+            <span className="hero-title__mask">
+              <span className="hero-title-line hero-title-line--accent">{t('hero.line2')}</span>
+            </span>
+            <span className="hero-title__mask">
+              <span className="hero-title-line">{t('hero.line3')}</span>
+            </span>
+          </h1>
+
+          <p className="hero-description hero-copy">{t('hero.description')}</p>
+
+          <div className="hero-actions">
+            <MagneticButton className="magnetic-button--primary hero-cta" onClick={onCta}>
+              {t('hero.cta_primary')}
+              <ArrowUpRight size={18} />
+            </MagneticButton>
+            <MagneticButton
+              className="magnetic-button--ghost hero-cta"
+              onClick={() => document.querySelector('#metodo')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              {t('hero.cta_secondary')}
+              <ArrowDown size={18} />
+            </MagneticButton>
           </div>
-          <div
-            ref={line3Ref}
-            className="opacity-0 translate-y-8 font-['Space_Grotesk'] font-bold text-5xl sm:text-6xl md:text-7xl lg:text-[90px] tracking-tight leading-[1.1]"
-            style={{ color: 'var(--accent-cyan)' }}
-          >
-            {t('hero.line3')}
+
+          <div className="hero-proof-grid">
+            {proof.map((item) => (
+              <div className="hero-proof" key={item.label}>
+                <strong>{item.value}</strong>
+                <span>{item.label}</span>
+              </div>
+            ))}
           </div>
         </div>
 
-        <p
-          ref={descRef}
-          className="opacity-0 translate-y-4 text-base sm:text-lg max-w-[600px] mx-auto mb-10 leading-relaxed"
-          style={{ color: 'var(--text-secondary)' }}
-        >
-          {t('hero.description')}
-        </p>
+        <aside className="hero-orbit" aria-label="CAIS AI core">
+          <div className="orbit-card orbit-card--main">
+            <div className="orbit-card__topline">
+              <span>CAIS · Agentic OS</span>
+              <strong>LIVE</strong>
+            </div>
 
-        <button
-          ref={ctaRef}
-          onClick={scrollToServices}
-          className="opacity-0 translate-y-4 inline-flex items-center gap-2 font-semibold text-sm px-8 py-4 rounded-full hover:scale-105 transition-all duration-300"
-          style={{
-            backgroundColor: 'var(--accent-cyan)',
-            color: 'var(--text-inverse)',
-            boxShadow: '0 0 30px var(--glow-cyan)',
-          }}
-        >
-          {t('hero.cta')}
-          <ArrowDown size={16} />
-        </button>
-      </div>
+            <div className="orbit-core" aria-hidden="true">
+              <BrainCircuit size={52} />
+            </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style={{ color: 'var(--text-muted)' }}>
-        <span className="text-xs tracking-widest uppercase">Scroll</span>
-        <div className="w-[1px] h-8 bg-gradient-to-b from-[var(--accent-cyan)] to-transparent animate-pulse" />
+            <div className="orbit-card__stack">
+              {agents.map((agent) => (
+                <div className="orbit-row" key={agent.name}>
+                  <span className="orbit-row__agent">
+                    <Bot size={15} />
+                    {agent.name}
+                  </span>
+                  <span className="orbit-row__bar" aria-hidden="true">
+                    <span style={{ transform: `scaleX(${agent.value / 100})` }} />
+                  </span>
+                  <span className="orbit-row__tag">{agent.tag}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="orbit-wave" aria-hidden="true" />
+            <p>{t('hero.orbit_caption')}</p>
+          </div>
+
+          <div className="orbit-pill orbit-pill--one">
+            <Bot size={18} />
+            {t('hero.pill_agents')}
+          </div>
+          <div className="orbit-pill orbit-pill--two">
+            <Workflow size={18} />
+            {t('hero.pill_workflow')}
+          </div>
+          <div className="orbit-pill orbit-pill--three">
+            <ShieldCheck size={18} />
+            {t('hero.pill_secure')}
+          </div>
+        </aside>
       </div>
     </section>
   )

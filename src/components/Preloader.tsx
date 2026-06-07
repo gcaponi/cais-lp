@@ -1,46 +1,40 @@
-import { useState, useEffect } from 'react'
-import { useTheme } from '@/context/ThemeContext'
+import { useEffect, useState } from 'react'
 
-interface PreloaderProps {
-  onComplete: () => void
-}
+type PreloaderProps = { onComplete: () => void }
 
+type Phase = 'text' | 'bar' | 'exit'
+
+/**
+ * Lightweight intro overlay. The brain is the brand mark in motion: it
+ * fades in, the progress bar fills, then the whole overlay lifts off
+ * and the page choreography takes over.
+ */
 export default function Preloader({ onComplete }: PreloaderProps) {
-  const { isDark } = useTheme()
-  const [phase, setPhase] = useState<'text' | 'line' | 'exit'>('text')
+  const [phase, setPhase] = useState<Phase>('text')
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase('line'), 800)
-    const t2 = setTimeout(() => setPhase('exit'), 1800)
-    const t3 = setTimeout(() => onComplete(), 2400)
+    const t1 = window.setTimeout(() => setPhase('bar'), 700)
+    const t2 = window.setTimeout(() => setPhase('exit'), 1700)
+    const t3 = window.setTimeout(() => onComplete(), 2300)
     return () => {
-      clearTimeout(t1)
-      clearTimeout(t2)
-      clearTimeout(t3)
+      window.clearTimeout(t1)
+      window.clearTimeout(t2)
+      window.clearTimeout(t3)
     }
   }, [onComplete])
 
+  const isExit = phase === 'exit'
+  const isBar = phase === 'bar' || phase === 'exit'
+
   return (
-    <div
-      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center transition-transform duration-700 ease-in-out ${
-        phase === 'exit' ? '-translate-y-full' : 'translate-y-0'
-      }`}
-      style={{ backgroundColor: isDark ? '#030712' : '#F8FAFC' }}
-    >
-      <div
-        className={`font-['Space_Grotesk'] font-bold text-5xl tracking-tight transition-all duration-500 ${
-          phase === 'text' ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
-        }`}
-        style={{ color: isDark ? '#FFFFFF' : '#0F172A' }}
-      >
-        CAIS
+    <div className={`preloader ${isExit ? 'preloader--exit' : ''}`} aria-hidden="true">
+      <div className="preloader__brain">
+        <img src="/cais-brand.jpg" alt="" className="preloader__brain-img" />
+        <div className="preloader__brain-glow" aria-hidden="true" />
       </div>
-      <div
-        className={`mt-6 h-[2px] transition-all duration-700 ease-out ${
-          phase === 'line' || phase === 'exit' ? 'w-48 opacity-100' : 'w-0 opacity-0'
-        }`}
-        style={{ backgroundColor: 'var(--accent-cyan)' }}
-      />
+      <div className={`preloader__brand ${isBar ? 'preloader__brand--hidden' : ''}`}>CAIS</div>
+      <div className={`preloader__bar ${isBar ? 'preloader__bar--visible' : ''}`} />
+      <div className="preloader__tag">Strategic AI Consulting</div>
     </div>
   )
 }

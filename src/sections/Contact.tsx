@@ -1,69 +1,93 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Mail, MapPin, Send, CheckCircle, Loader2 } from 'lucide-react'
+import { trpc } from '@/providers/trpc'
+import { CheckCircle2, Loader2, Mail, MapPin, Send } from 'lucide-react'
+import { SectionEyebrow } from '@/components/SectionHeader'
 
-gsap.registerPlugin(ScrollTrigger)
-
+// Web3Forms is the always-on fallback. trpc is the local backend that
+// also persists to DB and triggers SMTP email when configured.
 const WEB3FORMS_KEY = '41954813-1e79-4b15-bd51-e7fa3578dd45'
+const CONTACT_EMAIL = 'caponi.ai.studio@gmail.com'
+
+type FieldName = 'name' | 'email' | 'phone' | 'message'
+type FormState = Record<FieldName, string>
+type SubmitState = 'idle' | 'sending' | 'sent' | 'error'
+
+const sectionCopy = {
+  it: {
+    heading: 'Inizia la trasformazione agentica.',
+    body:
+      'Contattaci per una consulenza strategica gratuita. Analizziamo i tuoi processi e progettiamo una roadmap AI su misura, con agenti che lavorano davvero sui tuoi dati.',
+    location_value: 'Italia — Consulenza Nazionale & Internazionale',
+  },
+  en: {
+    heading: 'Start the agentic transformation.',
+    body:
+      'Reach out for a free strategic consultation. We analyze your processes and design a tailor-made AI roadmap, with agents that actually work on your data.',
+    location_value: 'Italy — National & International Consulting',
+  },
+  'pt-BR': {
+    heading: 'Comece a transformação agêntica.',
+    body:
+      'Fale connosco para uma consultoria estratégica gratuita. Analisamos os seus processos e desenhamos uma roadmap AI sob medida, com agentes que trabalham de fato nos seus dados.',
+    location_value: 'Itália — Consultoria Nacional & Internacional',
+  },
+}
 
 export default function Contact() {
-  const { t } = useTranslation()
-  const sectionRef = useRef<HTMLDivElement>(null)
+  const { t, i18n } = useTranslation()
+  const lng = (i18n.language || 'it').split('-')[0] as 'it' | 'en' | 'pt-BR'
+  const copy = sectionCopy[lng] ?? sectionCopy.it
 
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: '',
-  })
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [emailStatus, setEmailStatus] = useState<{ sent: boolean; error: string | null }>({ sent: false, error: null })
-  const [isLoading, setIsLoading] = useState(false)
+  const [form, setForm] = useState<FormState>({ name: '', email: '', phone: '', message: '' })
+  const [errors, setErrors] = useState<Partial<Record<FieldName, string>>>({})
+  const [state, setState] = useState<SubmitState>('idle')
+  const [serverMessage, setServerMessage] = useState('')
 
-  useEffect(() => {
-    const section = sectionRef.current
-    if (!section) return
-
-    gsap.fromTo(
-      section.querySelectorAll('.contact-reveal'),
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1,
-        y: 0,
-        stagger: 0.12,
-        duration: 0.8,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 70%',
-          toggleActions: 'play none none reverse',
-        },
-      }
-    )
-
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill())
+  const update = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target
+    setForm((current) => ({ ...current, [name]: value }))
+    if (errors[name as FieldName]) {
+      setErrors((current) => {
+        const next = { ...current }
+        delete next[name as FieldName]
+        return next
+      })
     }
-  }, [])
-
-  const validate = () => {
-    const newErrors: Record<string, string> = {}
-    if (formData.name.length < 2) newErrors.name = t('contact.error_name')
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = t('contact.error_email')
-    if (formData.message.length < 10) newErrors.message = t('contact.error_message')
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const validate = () => {
+    const next: Partial<Record<FieldName, string>> = {}
+    if (form.name.trim().length < 2) next.name = t('contact.error_name')
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = t('contact.error_email')
+    if (form.message.trim().length < 10) next.message = t('contact.error_message')
+    setErrors(next)
+    return Object.keys(next).length === 0
+  }
+
+  const submitToTrpc = async () => {
+    try {
+      await trpcContactCreate.mutateAsync({
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim() || undefined,
+        message: form.message.trim(),
+      })
+    } catch (err) {
+      // Non-blocking — the Web3Forms call is the primary channel.
+      // We log so the user can see what happened in the network tab.
+      console.warn('[CAIS] trpc contact.create failed (non-fatal):', err)
+    }
+  }
+
+  const trpcContactCreate = trpc.contact.create.useMutation()
+
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
     if (!validate()) return
 
-    setIsLoading(true)
-    setEmailStatus({ sent: false, error: null })
+    setState('sending')
+    setServerMessage('')
 
     try {
       const response = await fetch('https://api.web3forms.com/submit', {
@@ -71,288 +95,144 @@ export default function Contact() {
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           access_key: WEB3FORMS_KEY,
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          message: formData.message,
           subject: 'Nuovo contatto da CAIS Landing Page',
           from_name: 'CAIS Landing Page',
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          message: form.message,
         }),
       })
 
-      const data = await response.json()
-
-      if (data.success) {
-        setIsSubmitted(true)
-        setEmailStatus({ sent: true, error: null })
-        setFormData({ name: '', email: '', phone: '', message: '' })
-        setErrors({})
-      } else {
-        setEmailStatus({ sent: false, error: data.message || 'Errore durante l\'invio. Riprova.' })
+      const data = (await response.json()) as { success?: boolean; message?: string }
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || t('contact.error_generic'))
       }
-    } catch (err) {
-      setEmailStatus({ sent: false, error: 'Errore di rete. Controlla la connessione e riprova.' })
-    } finally {
-      setIsLoading(false)
+
+      // Persist + SMTP notify in parallel — does not block the user.
+      void submitToTrpc()
+
+      setState('sent')
+      setForm({ name: '', email: '', phone: '', message: '' })
+    } catch (error) {
+      setState('error')
+      setServerMessage(error instanceof Error ? error.message : t('contact.error_network'))
     }
   }
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-    if (errors[e.target.name]) {
-      setErrors((prev) => {
-        const next = { ...prev }
-        delete next[e.target.name]
-        return next
-      })
-    }
+  const reset = () => {
+    setState('idle')
+    setServerMessage('')
   }
-
-  const inputBaseClass =
-    'w-full rounded-lg px-4 py-3 text-sm focus:outline-none transition-all'
 
   return (
-    <section
-      id="contatti"
-      ref={sectionRef}
-      className="relative py-24 sm:py-32 px-6"
-      style={{ backgroundColor: 'var(--bg-primary)' }}
-    >
-      <div className="max-w-[1280px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          {/* Left Column */}
-          <div>
-            <h2
-              className="contact-reveal font-['Space_Grotesk'] font-bold text-3xl sm:text-4xl md:text-[40px] tracking-tight mb-6"
-              style={{ color: 'var(--text-primary)' }}
-            >
-              {t('contact.heading')}
-            </h2>
-            <p
-              className="contact-reveal text-base sm:text-lg leading-relaxed mb-10"
-              style={{ color: 'var(--text-secondary)' }}
-            >
-              {t('contact.body')}
-            </p>
+    <section id="contatti" className="contact-section">
+      <div className="contact-shell">
+        <div className="contact-copy reveal-up">
+          <SectionEyebrow>{t('contact.eyebrow')}</SectionEyebrow>
+          <h2>{copy.heading}</h2>
+          <p>{copy.body}</p>
 
-            <div className="space-y-6">
-              <div className="contact-reveal flex items-center gap-4">
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: 'var(--accent-cyan-bg)' }}
-                >
-                  <Mail size={20} style={{ color: 'var(--accent-cyan)' }} />
-                </div>
-                <div>
-                  <p
-                    className="text-xs uppercase tracking-wider mb-1"
-                    style={{ color: 'var(--text-muted)' }}
-                  >
-                    {t('contact.email_label')}
-                  </p>
-                  <a
-                    href="mailto:caponi.ai.studio@gmail.com"
-                    className="hover:text-[var(--accent-cyan)] transition-colors"
-                    style={{ color: 'var(--text-primary)' }}
-                  >
-                    caponi.ai.studio@gmail.com
-                  </a>
-                </div>
-              </div>
-
-              <div className="contact-reveal flex items-center gap-4">
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: 'var(--accent-cyan-bg)' }}
-                >
-                  <MapPin size={20} style={{ color: 'var(--accent-cyan)' }} />
-                </div>
-                <div>
-                  <p
-                    className="text-xs uppercase tracking-wider mb-1"
-                    style={{ color: 'var(--text-muted)' }}
-                  >
-                    {t('contact.location_label')}
-                  </p>
-                  <p style={{ color: 'var(--text-primary)' }}>
-                    {t('contact.location_value')}
-                  </p>
-                </div>
-              </div>
+          <div className="mt-8 space-y-4">
+            <div className="flex items-center gap-3 text-sm" style={{ color: 'var(--text-secondary)' }}>
+              <span
+                className="inline-flex h-9 w-9 items-center justify-center rounded-lg"
+                style={{ background: 'var(--accent-cyan-bg)', color: 'var(--accent-cyan-light)' }}
+              >
+                <Mail size={16} />
+              </span>
+              <a className="contact-mail !mt-0" href={`mailto:${CONTACT_EMAIL}`}>
+                {CONTACT_EMAIL}
+              </a>
+            </div>
+            <div className="flex items-center gap-3 text-sm" style={{ color: 'var(--text-secondary)' }}>
+              <span
+                className="inline-flex h-9 w-9 items-center justify-center rounded-lg"
+                style={{ background: 'var(--accent-cyan-bg)', color: 'var(--accent-cyan-light)' }}
+              >
+                <MapPin size={16} />
+              </span>
+              <span>{copy.location_value}</span>
             </div>
           </div>
-
-          {/* Right Column - Form */}
-          <div className="contact-reveal">
-            {isSubmitted ? (
-              <div
-                className="border rounded-2xl p-8 text-center"
-                style={{
-                  backgroundColor: 'var(--bg-card)',
-                  borderColor: emailStatus.sent ? 'rgba(16,185,129,0.3)' : 'rgba(253,137,37,0.3)',
-                }}
-              >
-                <CheckCircle size={48} className={emailStatus.sent ? "text-[#10B981] mx-auto mb-4" : "text-[#fd8925] mx-auto mb-4"} />
-                <h3
-                  className="font-['Space_Grotesk'] font-semibold text-xl mb-2"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  {t('contact.success_title')}
-                </h3>
-                <p style={{ color: 'var(--text-secondary)' }}>
-                  {t('contact.success_body')}
-                </p>
-                {emailStatus.error && (
-                  <div className="mt-4 p-3 rounded-lg text-sm" style={{ backgroundColor: 'rgba(253,137,37,0.08)', color: '#fd8925', border: '1px solid rgba(253,137,37,0.2)' }}>
-                    <p className="font-medium mb-1">Errore invio email</p>
-                    <p style={{ color: 'var(--text-secondary)' }}>{emailStatus.error}</p>
-                  </div>
-                )}
-                <button
-                  onClick={() => { setIsSubmitted(false); setEmailStatus({ sent: false, error: null }) }}
-                  className="mt-6 text-sm hover:underline"
-                  style={{ color: 'var(--accent-cyan)' }}
-                >
-                  {t('contact.success_again')}
-                </button>
-              </div>
-            ) : (
-              <form
-                onSubmit={handleSubmit}
-                className="border rounded-2xl p-8 space-y-6"
-                style={{
-                  backgroundColor: 'var(--bg-card)',
-                  borderColor: 'var(--border-color)',
-                }}
-              >
-                <div>
-                  <label
-                    className="block text-xs uppercase tracking-wider mb-2"
-                    style={{ color: 'var(--text-muted)' }}
-                  >
-                    {t('contact.form_name')}
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className={`${inputBaseClass} border`}
-                    style={{
-                      backgroundColor: 'var(--bg-input)',
-                      borderColor: errors.name ? '#EF4444' : 'var(--border-color)',
-                      color: 'var(--text-primary)',
-                    }}
-                    placeholder={t('contact.form_name_placeholder')}
-                  />
-                  {errors.name && (
-                    <p className="text-[#EF4444] text-xs mt-1">{errors.name}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label
-                    className="block text-xs uppercase tracking-wider mb-2"
-                    style={{ color: 'var(--text-muted)' }}
-                  >
-                    {t('contact.form_email')}
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className={`${inputBaseClass} border`}
-                    style={{
-                      backgroundColor: 'var(--bg-input)',
-                      borderColor: errors.email ? '#EF4444' : 'var(--border-color)',
-                      color: 'var(--text-primary)',
-                    }}
-                    placeholder={t('contact.form_email_placeholder')}
-                  />
-                  {errors.email && (
-                    <p className="text-[#EF4444] text-xs mt-1">{errors.email}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label
-                    className="block text-xs uppercase tracking-wider mb-2"
-                    style={{ color: 'var(--text-muted)' }}
-                  >
-                    {t('contact.form_phone')}
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className={`${inputBaseClass} border`}
-                    style={{
-                      backgroundColor: 'var(--bg-input)',
-                      borderColor: 'var(--border-color)',
-                      color: 'var(--text-primary)',
-                    }}
-                    placeholder={t('contact.form_phone_placeholder')}
-                  />
-                </div>
-
-                <div>
-                  <label
-                    className="block text-xs uppercase tracking-wider mb-2"
-                    style={{ color: 'var(--text-muted)' }}
-                  >
-                    {t('contact.form_message')}
-                  </label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows={4}
-                    className={`${inputBaseClass} border resize-none`}
-                    style={{
-                      backgroundColor: 'var(--bg-input)',
-                      borderColor: errors.message ? '#EF4444' : 'var(--border-color)',
-                      color: 'var(--text-primary)',
-                    }}
-                    placeholder={t('contact.form_message_placeholder')}
-                  />
-                  {errors.message && (
-                    <p className="text-[#EF4444] text-xs mt-1">{errors.message}</p>
-                  )}
-                </div>
-
-                {emailStatus.error && (
-                  <p className="text-[#EF4444] text-xs">{emailStatus.error}</p>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full flex items-center justify-center gap-2 font-semibold text-sm px-6 py-4 rounded-lg transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
-                  style={{
-                    backgroundColor: 'var(--accent-cyan)',
-                    color: 'var(--text-inverse)',
-                  }}
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 size={16} className="animate-spin" />
-                      {t('contact.submit_loading')}
-                    </>
-                  ) : (
-                    <>
-                      <Send size={16} />
-                      {t('contact.submit')}
-                    </>
-                  )}
-                </button>
-              </form>
-            )}
-          </div>
         </div>
+
+        <form className="contact-form reveal-up" onSubmit={submit} noValidate>
+          {state === 'sent' ? (
+            <div className="flex flex-col items-center justify-center gap-3 py-12 text-center">
+              <span
+                className="inline-flex h-14 w-14 items-center justify-center rounded-full"
+                style={{ background: 'var(--accent-cyan-bg)', color: 'var(--accent-lime)' }}
+              >
+                <CheckCircle2 size={28} />
+              </span>
+              <h3 className="text-2xl font-semibold" style={{ color: 'var(--text-primary)' }}>
+                {t('contact.success_title')}
+              </h3>
+              <p className="form-success">{t('contact.success_body')}</p>
+              <button type="button" onClick={reset} className="text-sm font-semibold hover:underline" style={{ color: 'var(--accent-cyan-light)' }}>
+                {t('contact.success_again')}
+              </button>
+            </div>
+          ) : (
+            <>
+              <div className="form-grid">
+                <label>
+                  <span>{t('contact.form_name')}</span>
+                  <input
+                    name="name"
+                    value={form.name}
+                    onChange={update}
+                    placeholder={t('contact.form_name_placeholder')}
+                    autoComplete="name"
+                  />
+                  {errors.name ? <small>{errors.name}</small> : null}
+                </label>
+                <label>
+                  <span>{t('contact.form_email')}</span>
+                  <input
+                    name="email"
+                    value={form.email}
+                    onChange={update}
+                    placeholder={t('contact.form_email_placeholder')}
+                    autoComplete="email"
+                    type="email"
+                  />
+                  {errors.email ? <small>{errors.email}</small> : null}
+                </label>
+              </div>
+              <label>
+                <span>{t('contact.form_phone')}</span>
+                <input
+                  name="phone"
+                  value={form.phone}
+                  onChange={update}
+                  placeholder={t('contact.form_phone_placeholder')}
+                  autoComplete="tel"
+                  type="tel"
+                />
+              </label>
+              <label>
+                <span>{t('contact.form_message')}</span>
+                <textarea
+                  name="message"
+                  value={form.message}
+                  onChange={update}
+                  placeholder={t('contact.form_message_placeholder')}
+                  rows={5}
+                />
+                {errors.message ? <small>{errors.message}</small> : null}
+              </label>
+
+              {state === 'error' ? <p className="form-error">{serverMessage}</p> : null}
+
+              <button type="submit" className="submit-button" disabled={state === 'sending'}>
+                {state === 'sending' ? <Loader2 size={18} className="spin" /> : <Send size={18} />}
+                {state === 'sending' ? t('contact.submit_loading') : t('contact.submit')}
+              </button>
+            </>
+          )}
+        </form>
       </div>
     </section>
   )
